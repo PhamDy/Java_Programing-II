@@ -36,6 +36,9 @@ public class BookConsole {
                 case 4:
                     ManagerBook.borrowBooks();
                     break;
+                case 5:
+                    ManagerBook.displayBookByStudenId();
+                    break;
                 case 6:
                     System.out.println("Exit...");
                     flag = false;

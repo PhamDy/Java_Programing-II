@@ -45,7 +45,7 @@ public class BookDAO implements DAOInterface<Book> {
 
     @Override
     public Book selectById(String id) throws SQLException {
-        Book book = null;
+        Book book = new Book();
         connection = DBConnection.getConnection();
 
         String query ="SELECT * FROM book WHERE id = ?";
@@ -74,7 +74,7 @@ public class BookDAO implements DAOInterface<Book> {
 
     @Override
     public Book selectByName(String name) throws SQLException {
-        Book book = null;
+        Book book = new Book();
         connection = DBConnection.getConnection();
 
         String query ="SELECT * FROM book WHERE name = ?";

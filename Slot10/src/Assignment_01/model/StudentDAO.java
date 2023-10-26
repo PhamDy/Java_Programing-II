@@ -40,7 +40,7 @@ public class StudentDAO implements DAOInterface<Student> {
     @Override
     public Student selectById(String id) throws SQLException {
         connection = DBConnection.getConnection();
-        Student student = null;
+        Student student = new Student();
 
 
         String query ="SELECT * FROM student WHERE id = ?";

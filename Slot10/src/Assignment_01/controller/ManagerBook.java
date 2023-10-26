@@ -1,12 +1,14 @@
 package Assignment_01.controller;
 
 import Assignment_01.entity.Book;
+import Assignment_01.entity.Student;
 import Assignment_01.model.BookDAO;
 import Assignment_01.model.StudentDAO;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ManagerBook {
@@ -57,13 +59,18 @@ public class ManagerBook {
         }
     }
 
+    private static List<Student> students = new ArrayList<>();
+
     public static void borrowBooks() throws SQLException {
+        String student_id = "";
+        String book_name = "";
+
         Scanner sc = new Scanner(System.in);
         boolean flag1 = true;
         do {
             System.out.println("Enter by id student: ");
-            String id = sc.nextLine();
-            String result = StudentDAO.getInstance().checkIdStudent(id);
+            student_id = sc.nextLine();
+            String result = StudentDAO.getInstance().checkIdStudent(student_id);
             if (result!=null) {
                 flag1 = false;
                 break;
@@ -74,14 +81,57 @@ public class ManagerBook {
         boolean flag2 = true;
         do {
             System.out.println("Please enter the name of the book you want to borrow ");
-            String bookName = sc.nextLine();
-            String result = BookDAO.getInstance().checkNameBook(bookName);
+            book_name = sc.nextLine();
+            String result = BookDAO.getInstance().checkNameBook(book_name);
             if (result!=null) {
                 flag2 = false;
                 break;
             }
             System.out.println("Book name not found");
         }while (flag2);
+
+        System.out.println("Successfully lend books to students");
+
+        Book book = new BookDAO().getInstance().selectByName(book_name);
+        Student student1 = StudentDAO.getInstance().selectById(student_id);
+        boolean check = false;
+
+        for (Student s: students
+             ) {
+            if (s.getId().equals(student1.getId())){
+                s.addBook(book);
+                check = true;
+                break;
+            }
+        }
+        if (!check){
+            student1.addBook(book);
+            students.add(student1);
+        }
+
+    }
+
+    public static void displayBookByStudenId() throws SQLException{
+        Scanner sc = new Scanner(System.in);
+        String student_id = "";
+        boolean flag1 = true;
+        do {
+            System.out.println("Enter by id student: ");
+            student_id = sc.nextLine();
+            String result = StudentDAO.getInstance().checkIdStudent(student_id);
+            if (result!=null) {
+                flag1 = false;
+                break;
+            }
+            System.out.println("Student id not found");
+        }while (flag1);
+
+        for (Student s: students
+             ) {
+            if (s.getId().equals(student_id)){
+                System.out.println(s.toStringBook());
+            }
+        }
 
     }
 
